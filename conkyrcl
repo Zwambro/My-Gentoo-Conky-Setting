@@ -1,0 +1,111 @@
+######################
+# - Conky settings - #
+######################
+update_interval 2
+total_run_times 0
+net_avg_samples 1
+cpu_avg_samples 2
+
+imlib_cache_size 0
+double_buffer yes
+no_buffers yes
+
+format_human_readable
+
+#####################
+# - Text settings - #
+#####################
+use_xft yes
+xftfont Droid Sans:size=6
+override_utf8_locale yes
+text_buffer_size 2048
+
+#############################
+# - Window specifications - #
+#############################
+own_window yes
+own_window_type desktop
+own_window_hints below,skip_taskbar,skip_pager
+
+own_window_colour 000000
+own_window_argb_visual yes
+own_window_argb_value 178
+
+alignment top_left
+gap_y 15
+gap_x 8
+border_inner_margin 5
+draw_outline no
+draw_borders no
+
+minimum_size 300 50
+maximum_width 300
+maximum_height 50
+
+default_bar_size 100 12
+draw_bar_borders no
+
+default_color DEDEDE
+color1 1793D0
+color2 8C8C8C
+color3 ABABAB
+color4 C9C9C9
+color5 DEDEDE
+color6 757575
+color7 CD00CD
+color8 35BF5C
+color9 FF00B5
+
+own_window_transparent no
+TEXT
+${font xirod:Bold:size=29}${color purple} Gentoo OS ${color7}$font
+# CPU
+${font xirod:Bold:size=13}${color purple}CPU ${hr 2}$font$color
+
+${font}Core 0   ${color7}${execi 30 sensors | grep 'Core 0:' | cut -c18-19}°C${color}  @  ${cpu cpu1} % $alignr ${color8}${cpubar cpu1}${color}
+${font}Core 1   ${color7}${execi 30 sensors | grep 'Core 1:' | cut -c18-19}°C${color}  @  ${cpu cpu2} % $alignr ${color8}${cpubar cpu2}${color}
+${font}Core 2   ${color7}${execi 30 sensors | grep 'Core 2:' | cut -c18-19}°C${color}  @  ${cpu cpu3} % $alignr ${color8}${cpubar cpu3}${color}
+${font}Core 3   ${color7}${execi 30 sensors | grep 'Core 3:' | cut -c18-19}°C${color}  @  ${cpu cpu4} % $alignr ${color8}${cpubar cpu4}${color}
+
+Core 0${alignr}Core1
+${cpugraph cpu1 35,120 000000 35BF5C} ${alignr}${cpugraph cpu2 35,120 000000 35BF5C}
+Core 2${alignr}Core 3
+${cpugraph cpu3 35,120 000000 35BF5C} ${alignr}${cpugraph cpu4 35,120 000000 35BF5C}
+
+# LOAD
+${font xirod:Bold:size=13}${color purple}LOAD ${hr 2}$font${color}
+
+${font Droid Sans:bold:size=11}${color1}CPU ${hr 1}
+       ${running_processes} / $processes ${goto 110}(%) PID${goto 200}CPU $alignr MEM$font
+       ${font Droid Sans:bold:size=11}${color2}${top name 1}${goto 110}${top pid 1}${goto 200}${top cpu 1}$alignr${top mem 1}${color}$font
+       ${color3}${top name 2}${goto 110}${top pid 2}${goto 200}${top cpu 2}$alignr${top mem 2}${color}
+       ${color4}${top name 3}${goto 110}${top pid 3}${goto 200}${top cpu 3}$alignr${top mem 3}${color}
+       ${top name 4}${goto 110}${top pid 4}${goto 200}${top cpu 4}$alignr${top mem 4}
+       ${top name 5}${goto 110}${top pid 5}${goto 200}${top cpu 5}$alignr${top mem 5}
+
+${font Droid Sans:bold:size=11}${color1}MEM  ${hr 1}
+${goto 110}(%) PID${goto 200}MEM${alignr}CPU$font
+       ${font Droid Sans:bold:size=11}${color2}${top_mem name 1}${goto 110}${top_mem pid 1}${goto 200}${top_mem mem 1}${alignr}${top_mem cpu 1}$font
+       ${color3}${top_mem name 2}${goto 110}${top_mem pid 2}${goto 200}${top_mem mem 2}${alignr}${top_mem cpu 2}$color
+       ${color4}${top_mem name 3}${goto 110}${top_mem pid 3}${goto 200}${top_mem mem 3}${alignr}${top_mem cpu 3}$color
+       ${color5}${top_mem name 4}${goto 110}${top_mem pid 4}${goto 200}${top_mem mem 4}${alignr}${top_mem cpu 4}$color
+       ${top_mem name 5}${goto 110}${top_mem pid 5}${goto 200}${top_mem mem 5}${alignr}${top_mem cpu 5}
+
+# MEMORY
+${font xirod:Bold:size=13}${color purple}MEMORY ${hr 2}$color$font
+
+${color1}${font Droid Sans:bold:size=11}RAM$font$color
+       $mem / $memmax $alignr $memperc %
+       ${color8}${membar 14,120 /}$color
+${color1}${font Droid Sans:bold:size=8}SWAP$font$color
+       $swap / $swapmax $alignr $swapperc %
+       ${color8}${swapbar 14,120 /}$color
+
+# HDD
+${font xirod:Bold:size=13}${color purple}DISKS ${hr 2}$font$color
+${font Droid Sans:bold:size=11}${color1}/dev/sda   		${color orange}Read:$diskio_read	Write:$diskio_write${color1}   $alignr ${execi 300 sudo hddtemp /dev/sda | cut -c34-77}°C$color
+
+${font Droid Sans:bold:size=11}${color1}ROOT $font$font$alignr ${fs_type /}$font
+       ${color5}${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /} %$color
+       ${color8}${fs_bar 14,120 /}$color
+

@@ -1,0 +1,97 @@
+###################### # - Conky settings - #
+######################
+update_interval 1
+total_run_times 0
+net_avg_samples 2
+cpu_avg_samples 2
+
+imlib_cache_size 0
+double_buffer yes
+no_buffers yes
+
+format_human_readable
+
+#####################
+# - Text settings - #
+#####################
+use_xft yes
+xftfont Droid Sans:size=8
+
+override_utf8_locale yes
+text_buffer_size 2048
+
+#############################
+# - Window specifications - #
+#############################
+own_window yes
+own_window_type desktop
+own_window_hints below,skip_taskbar,skip_pager
+
+own_window_colour 000000
+own_window_argb_visual yes
+own_window_argb_value 128
+
+alignment top_right
+gap_y 5
+gap_x 10
+border_inner_margin 8
+
+draw_outline no
+draw_borders no
+
+minimum_size 300 200
+maximum_width 300
+maximum_height 200
+
+default_bar_size i200 12
+draw_graph_borders no
+draw_bar_borders no
+
+default_color DEDEDE
+color1 1793D0
+color2 8C8C8C
+color3 ABABAB
+color4 C9C9C9
+color5 DEDEDE
+color6 757575
+color7 35BF5C
+color8 575757
+color9 CD00CD
+
+
+own_window_transparent no
+TEXT
+${voffset 10}${color purple}${goto 10}${font Liberation Sans:size=62}${time %H}${font Liberation Sans:size=20}${voffset 30}:${time %M}${font Liberation Sans:size=12}${voffset 30}${time %S}
+${color2}${voffset -100}${font}${font Droid Sans Mono:size=8}${execpi 3600 DJS=`date +%_d`; cal -m | sed '1d' | sed '/./ !d' | sed 's/$/ /' | fold -w 21 | sed -n '/^.\{21\}/p' | sed 's/^/${alignr} /' | sed /" $DJS "/s/" $DJS "/" "'${font Droid Sans Mono:bold:size=9}${color7}'"$DJS"'${font Droid Sans Mono:size=9}${color2}'" "/}${font}
+# NETWORK
+${font xirod:Bold:size=13}${color7}NETWORK ${hr 2}$font
+
+${font Droid Sans:Bold:size=12}${color7}NETWORK (GENERAL)${stippled_hr}$color$font
+Active Interface ${alignr}$gw_iface
+Public IP${alignr} NOPE;)
+#${execi 3600 wget -O - http://ip.tupeux.com | tail}
+Gateway IP #${alignr}$gw_ip
+DNS #${alignr}$nameserver
+TOR Status ${alignr}${if_running tor} Active${else}Disabled${endif}
+Firewall ${alignr}${exec systemctl status ufw | grep active | cut -c 11-27}
+Packets $alignr In:${tcp_portmon 1 32767 count}  Out: ${tcp_portmon 32768 61000 count}
+
+${font Droid Sans:Bold:size=11}${alignc}${color7}NETWORK (WIRELESS) ${stippled_hr}$font$color
+${font Droid Sans:Bold:size=11}wlp0s29u1u3 $font$alignr ${addr wlp0s29u1u3}$font
+SSID${font Droid Sans:size=11}${alignr}${wireless_essid wlp0s29u1u3}${font}
+Up: ${color green}${downspeed wlp0s29u1u3}/s ${color}(${totaldown wlp0s29u1u3})${alignr}Down: ${color red}${upspeed wlp0s29u1u3}/s $color(${totalup wlp0s29u1u3})
+${downspeedgraph wlp0s29u1u3 70,120  000000 00ff00} ${alignr}${upspeedgraph wlp0s29u1u3 70,120 000000 ff0000}
+$alignr${color6}Link quality:    ${color7}${wireless_link_bar 12,230 wlp0s29u1u3}$color
+
+# TCP & UDP     
+${font xirod:Bold:size=13}${color7}CONNECTIONS ${hr 2}$font$color
+${font Droid Sans:Bold:size=11}Outbound Connections:  ${tcp_portmon 32768 61000 count}  ${alignr} Remote Service / Port$font
+   ${tcp_portmon 32768 61000 rhost 0} ${alignr} ${tcp_portmon 32768 61000 rservice 0}
+   ${tcp_portmon 32768 61000 rhost 1} ${alignr} ${tcp_portmon 32768 61000 rservice 1}
+   ${tcp_portmon 32768 61000 rhost 2} ${alignr} ${tcp_portmon 32768 61000 rservice 2}
+   ${tcp_portmon 32768 61000 rhost 3} ${alignr} ${tcp_portmon 32768 61000 rservice 3}
+   ${tcp_portmon 32768 61000 rhost 5} ${alignr} ${tcp_portmon 32768 61000 rservice 4}
+   ${tcp_portmon 32768 61000 rhost 6} ${alignr} ${tcp_portmon 32768 61000 rservice 5}
+   ${tcp_portmon 32768 61000 rhost 7} ${alignr} ${tcp_portmon 32768 61000 rservice 6}
+
+${color orange}${font xirod:size=13}SYSTEM LOG ${hr 2}$color${font Droid Sans:size=10} ${execi 30 tail -n10 /var/log/entropy/entropy.log}
